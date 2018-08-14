@@ -1,0 +1,47 @@
+import csv
+import httplib2
+
+from apiclient import discovery
+from apiclient.http import MediaFileUpload
+
+from google_auth import get_credentials
+
+
+def to_csv_file(dst_file, rows, new_file=None, finalize=False):
+    if new_file:
+        assert dst_file['dest']
+        dst_file['local'] = new_file
+        fp = open(new_file, "w")
+        dst_file['fp'] = fp
+        csv_writer = csv.writer(fp, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        dst_file['csv'] = csv_writer
+    else:
+        csv_writer = dst_file['csv']
+    for row in rows:
+        csv_writer.writerow(row)
+    if finalize:
+        dst_file['fp'].close()
+        local = dst_file['local']
+        upload_dest = dst_file['dest']
+        for x in dst_file.keys():
+            del dst_file[x]
+        upload_file(local, **upload_dest)
+
+
+def upload_file(local, folder_id=None, file_name=None, file_id=None, app_name=''):
+    assert file_name
+    media_body = MediaFileUpload(local, chunksize=1024*256, resumable=True)
+    metadata = {'name': file_name, 'mimeType': 'text/csv'}
+    credentials = get_credentials(app_name)
+    http = credentials.authorize(httplib2.Http())
+    client = discovery.build('drive', 'v3', http=http).files()
+    if file_id:
+        res = client.update(fileId=file_id, body=metadata, media_body=media_body).execute()
+    else:
+        if folder_id:
+            metadata['parents'] = [folder_id]
+        res = client.create(body=metadata, media_body=media_body).execute()
+        if res:
+            print('Uploaded "{}" to "{}"'.format(file_name, res['id']))
+    if not res:
+        raise Exception('Failed to upload "{}"'.format(file_name))

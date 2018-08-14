@@ -1,0 +1,14 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+"google-api-python-client" = "*"
+"httplib2" = "*"
+google-auth = {git = "git://github.com/rewardStyle/google_auth.git"}
+
+[dev-packages]
+
+[requires]
+python_version = "3"
