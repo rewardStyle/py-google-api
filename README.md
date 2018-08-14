@@ -2,6 +2,12 @@
 
 A Python3 library for accessing Google API functionality
 
+## Installation
+
+```bash
+pipenv install git+git://github.com/rewardStyle/py-google-api.git#egg=py-google-api
+```
+
 ## Goole API Authentication
 
 Google API authentication is handled by the [rewardStyle/google_auth](https://github.com/rewardStyle/google_auth)
