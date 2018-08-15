@@ -4,10 +4,8 @@ import httplib2
 from apiclient import discovery
 from apiclient.http import MediaFileUpload
 
-from google_auth import get_credentials
 
-
-def to_csv_file(dst_file, rows, new_file=None, finalize=False):
+def to_csv_file(dst_file, rows, credentials=None, new_file=None, finalize=False):
     if new_file:
         assert dst_file['dest']
         dst_file['local'] = new_file
@@ -25,15 +23,14 @@ def to_csv_file(dst_file, rows, new_file=None, finalize=False):
         upload_dest = dst_file['dest']
         for x in dst_file.keys():
             del dst_file[x]
-        upload_file(local, **upload_dest)
+        upload_file(credentials, local, **upload_dest)
 
 
-def upload_file(local, folder_id=None, file_name=None, file_id=None, app_name=''):
+def upload_file(credentials, local, folder_id=None, file_name=None, file_id=None):
     assert file_name
     media_body = MediaFileUpload(local, chunksize=1024*256, resumable=True)
     metadata = {'name': file_name, 'mimeType': 'text/csv'}
-    credentials = get_credentials(app_name)
-    http = credentials.authorize(httplib2.Http())
+    http = credentials.get().authorize(httplib2.Http())
     client = discovery.build('drive', 'v3', http=http).files()
     if file_id:
         res = client.update(fileId=file_id, body=metadata, media_body=media_body).execute()

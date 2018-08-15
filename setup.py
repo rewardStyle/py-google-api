@@ -35,7 +35,7 @@ setup(
     # There are some restrictions on what makes a valid project name
     # specification here:
     # https://packaging.python.org/specifications/core-metadata/#name
-    name='py-google-api',  # Required
+    name='google-api',  # Required
 
     # Versions should comply with PEP 440:
     # https://www.python.org/dev/peps/pep-0440/
@@ -57,9 +57,9 @@ setup(
 
     author_email='devops@rewardstyle.com',  # Optional
 
-    packages=find_packages(exclude=['Pipfile', 'Pipfile.lock', 'client_secret.json', 'client_credentials.json']),  # Required
+    packages=find_packages(exclude=['docs', 'Pipfile', 'Pipfile.lock', 'client_secret.json', 'client_credentials.json']),  # Required
 
-    install_requires=['oauth2client'],  # Optional
+    install_requires=['oauth2client', 'google-api-python-client'],  # Optional
 
     project_urls={  # Optional
         'Bug Reports': 'https://github.com/rewardStyle/py-google-api/issues',

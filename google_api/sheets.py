@@ -1,12 +1,10 @@
 import httplib2
 
 from apiclient import discovery
-from google_auth import get_credentials
 
 
-def to_sheet(spreadsheet_id, values, sheet_name='Sheet1', row_offset=0, clear_columns=False, app_name=''):
-    credentials = get_credentials(app_name)
-    http = credentials.authorize(httplib2.Http())
+def to_sheet(spreadsheet_id, values, credentials, sheet_name='Sheet1', row_offset=0, clear_columns=False):
+    http = credentials.get().authorize(httplib2.Http())
     discoveryUrl = 'https://sheets.googleapis.com/$discovery/rest?version=v4'
     service = discovery.build('sheets', 'v4', http=http, discoveryServiceUrl=discoveryUrl)
 
