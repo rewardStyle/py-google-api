@@ -21,8 +21,8 @@ def to_sheet(spreadsheet_id, values, credentials, sheet_name='Sheet1', row_offse
         request.execute()
 
     # Write data to spreadsheet as RAW strings
-    for idx, row in enumerate(values):
-        values[idx] = [str(x) for x in row]
+    for idx in range(len(values)):
+        values[idx] = [str(x) for x in values[idx]]
     request = service.spreadsheets().values().update(
         spreadsheetId=spreadsheet_id,
         range="!".join([sheet_name,ranges]),
