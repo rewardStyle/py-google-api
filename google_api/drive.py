@@ -21,8 +21,7 @@ def to_csv_file(dst_file, rows, credentials=None, new_file=None, finalize=False)
         dst_file['fp'].close()
         local = dst_file['local']
         upload_dest = dst_file['dest']
-        dict_keys = dst_file.keys()
-        for x in dict_keys:
+        for x in list(dst_file.keys()):
             del dst_file[x]
         upload_file(credentials, local, **upload_dest)
 
