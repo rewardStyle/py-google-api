@@ -6,6 +6,8 @@ A Python3 library for accessing Google API functionality
 
 ```bash
 pipenv install git+git://github.com/rewardStyle/py-google-api.git#egg=google-api
+# To install and lock all dependencies properly, install a specific sha:
+pipenv install -e git+git://github.com/rewardStyle/py-google-api.git@<GIT_SHA>#egg=google-api
 ```
 
 ## Use Cases
